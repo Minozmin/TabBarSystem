@@ -7,6 +7,10 @@
 //
 
 #import "AppDelegate.h"
+#import "FirstViewController.h"
+#import "SecondViewController.h"
+
+#define HSQColorTitleCoffee             [UIColor colorWithRed:0x91 / 255. green:0x4E / 255. blue:0x07 / 255. alpha:1]
 
 @interface AppDelegate ()
 
@@ -16,7 +20,40 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    
+    if (!self.window.rootViewController) {
+        self.window.rootViewController = [[UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"UITabBarController"];
+    }
+    self.window.rootViewController.view.backgroundColor = [UIColor whiteColor];
+    UITabBarController *tabbar = (id)self.window.rootViewController;
+    
+#if 1
+    
+    UITabBarItem *item1 = tabbar.tabBar.items[0];
+    item1.image = [[UIImage imageNamed:@"ic_main_mine"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    item1.selectedImage = [[UIImage imageNamed:@"ic_main_mine_selected"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    item1.title = @"我的";
+    
+    UITabBarItem *item2 = tabbar.tabBar.items[1];
+    item2.image = [[UIImage imageNamed:@"ic_main_home"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    item2.selectedImage = [[UIImage imageNamed:@"ic_main_home_selected"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    item2.title = @"首页";
+#else
+    FirstViewController *firstVC = tabbar.viewControllers[0];
+    SecondViewController *secondVC = tabbar.viewControllers[1];
+    //这种方法UIImageRenderingModeAlwaysOriginal这个只有selectedImage生效，不建议使用，可以自己试试
+    firstVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"首页" image:[UIImage imageNamed:@"ic_main_home"] selectedImage:[[UIImage imageNamed:@"ic_main_home_selected"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+    //建议使用
+    secondVC.tabBarItem.image = [[UIImage imageNamed:@"ic_main_mine"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    secondVC.tabBarItem.selectedImage = [[UIImage imageNamed:@"ic_main_mine_selected"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    secondVC.title = @"我的";
+    
+#endif
+    
+    [[UITabBar appearance] setTintColor:HSQColorTitleCoffee];
+    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:HSQColorTitleCoffee, NSForegroundColorAttributeName, nil] forState:UIControlStateNormal];
+    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:HSQColorTitleCoffee, NSForegroundColorAttributeName, nil] forState:UIControlStateSelected];
+    
     return YES;
 }
 
